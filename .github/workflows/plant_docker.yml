@@ -32,4 +32,4 @@ jobs:
           # Datei verschieben oder direkt im Repo lassen
           git add state.png
           git commit -m "Auto-update state.png from state.puml" || echo "No changes to commit"
-          git push
+          git push 
