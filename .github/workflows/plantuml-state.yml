@@ -1,0 +1,41 @@
+name: Generate PlantUML state diagram
+
+on:
+  push:
+    paths:
+      - "state.puml"
+      - ".github/workflows/plantuml-state.yml"
+  workflow_dispatch:
+
+jobs:
+  render-state-diagram:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Repository auschecken
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # 2. Java & Graphviz installieren (PlantUML braucht Graphviz)
+      - name: Install Java and Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre graphviz
+
+      # 3. PlantUML-JAR herunterladen
+      - name: Download PlantUML
+        run: |
+          curl -L -o plantuml.jar https://github.com/plantuml/plantuml/releases/latest/download/plantuml.jar
+
+      # 4. PNG aus state.puml generieren
+      - name: Generate PNG from state.puml
+        run: |
+          java -jar plantuml.jar -tpng state.puml
+
+      # 5. Bild als Artifact hochladen (Download im Actions-Tab)
+      - name: Upload diagram artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: state-diagram
+          path: |
+            state.png
