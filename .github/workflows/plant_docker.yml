@@ -22,7 +22,7 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}:/data" \
             plantuml/plantuml \
-            -tpng state.puml
+            -tpng state.puml 
 
       - name: Commit and push generated PNG
         run: |
