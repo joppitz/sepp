@@ -1,0 +1,35 @@
+name: Generate PlantUML state diagram (Docker, commit result)
+
+on:
+  push:
+    paths:
+      - "state.puml"
+      - ".github/workflows/plantuml-state-docker.yml"
+  workflow_dispatch:   
+  
+jobs:
+  render-state-diagram:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate PNG from state.puml with Docker
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/data" \
+            plantuml/plantuml \
+            -tpng state.puml 
+
+      - name: Commit and push generated PNG
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Datei verschieben oder direkt im Repo lassen
+          git add state.png
+          git commit -m "Auto-update state.png from state.puml" || echo "No changes to commit"
+          git push 
