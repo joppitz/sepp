@@ -6,7 +6,7 @@ on:
       - "state.puml"
       - ".github/workflows/plantuml-state-docker.yml"
   workflow_dispatch:   
-
+  
 jobs:
   render-state-diagram:
     runs-on: ubuntu-latest
