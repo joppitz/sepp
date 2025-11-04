@@ -1,0 +1,21 @@
+@startuml
+title Zustandsautomat: Schlafen / Wach
+
+[*] --> Schlafen : Start
+
+Schlafen --> Wach : Wecker klingelt
+Wach --> Schlafen : ins Bett gehen
+
+Wach : entry / Augen öffnen
+Wach : do / Aktivitäten
+Schlafen : entry / Augen schließen
+Schlafen : do / schlafen
+
+' Optional: Zwischenzustand "Dösen"
+state Dösen
+
+Wach --> Dösen : müde werden
+Dösen --> Schlafen : einschlafen
+Dösen --> Wach : aufschrecken
+
+@enduml
